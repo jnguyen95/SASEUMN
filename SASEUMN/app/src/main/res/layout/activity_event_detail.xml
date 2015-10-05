@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:layout_marginLeft="@dimen/activity_vertical_margin"
+    android:layout_marginRight="@dimen/activity_vertical_margin"
+    android:layout_marginStart="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="start">
+
+    <TextView
+        android:id="@+id/eventTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Event Title"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textColor="#ff0015b9"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MechE 1241"
+        android:layout_marginTop="5dp"
+        android:textColor="#222222"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="September 20 2015"
+        android:layout_marginTop="5dp"
+        android:textColor="#111111"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="06:00 PM"
+        android:layout_marginTop="5dp"
+        android:textColor="#111111"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/FBText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Place FB Link Here"
+        android:layout_marginTop="5dp"
+        android:textColor="#111111"
+        android:textSize="20sp"/>
+
+    <ScrollView
+        android:id="@+id/scrollNews"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="4dp"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+
+        <TextView
+            android:id="@+id/bodyText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Event body text here"
+            android:textColor="#444444"
+            android:textSize="15sp"/>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:layout_marginLeft="@dimen/activity_vertical_margin"
+    android:layout_marginStart="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="start"
+    android:id="@+id/rnLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title Text"
+            android:textSize="20sp"
+            android:textColor="#111111"
+            android:layout_marginTop="7dp"
+            android:id="@+id/titleText"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="August 6th, 2015"
+            android:textSize="20sp"
+            android:textColor="#111111"
+            android:id="@+id/nDateText"
+            android:layout_below="@+id/titleText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="News Content Here"
+            android:textSize="15sp"
+            android:ellipsize="end"
+            android:lines="5"
+            android:textColor="#222222"
+            android:id="@+id/contentText"
+            android:layout_below="@+id/nDateText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>

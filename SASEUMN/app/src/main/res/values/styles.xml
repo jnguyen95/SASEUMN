@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <!--<style name="SplashTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">-->
+        <!-- Customize your theme here. -->
+    <!--</style>-->
+
+    <!-- Colors here. -->
+    <color name="LightBlue">#FF398FB9</color>
+    <color name="SlightlyDarkerBlue">#FF007EB9</color>
+    <color name="GrayFocused">#FFDDDDDD</color>
+    <color name="GrayUnfocused">#FFEEEEEE</color>
+    <color name="InactiveBlue">#FF71A3FF</color>
+    <color name="SelectedBlue">#FF3D8DFF</color>
+
+    <style name="LiteBlueTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle" tools:ignore="NewApi">@style/SASEActionBar</item>
+        <item name="android:actionBarTabStyle">@style/SASETabs</item>
+        <item name="actionBarStyle">@style/SASEActionBar</item>
+    </style>
+
+    <style name="SASEActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background" tools:ignore="NewApi">@color/SlightlyDarkerBlue</item>
+        <item name="background">@color/SlightlyDarkerBlue</item>
+    </style>
+
+    <style name="SASETabs" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background" tools:ignore="NewApi">@drawable/sase_tabs</item>
+        <item name="background">@drawable/sase_tabs</item>
+    </style>
+
+</resources>

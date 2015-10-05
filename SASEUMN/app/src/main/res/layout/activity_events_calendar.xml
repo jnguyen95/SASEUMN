@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_vertical_margin"
+    android:layout_marginStart="@dimen/activity_vertical_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="start"
+    tools:context="com.sase.justin.saseumn.EventsCalendar"
+    android:id="@+id/listLayout">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="start"
+        android:id="@+id/nextEventLayout"
+        android:layout_below="@+id/nextEventText"
+        android:layout_alignLeft="@android:id/list"
+        android:layout_alignStart="@android:id/list"
+        android:layout_marginBottom="12sp"
+        android:clickable="true"
+        android:layout_marginTop="3sp"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_alignRight="@android:id/list"
+        android:layout_alignEnd="@android:id/list"
+        android:layout_marginRight="12sp">
+
+        <TextView
+            android:id="@+id/nextEventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="    "
+            android:textSize="18sp"
+            android:textColor="#111111"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/nextDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "
+            android:textColor="#111111"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/nextEventTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4sp" />
+
+        <TextView
+            android:id="@+id/nextRoomText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "
+            android:textColor="#111111"
+            android:textSize="18sp"
+            android:layout_below="@+id/nextDateText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4sp" />
+
+        <TextView
+            android:id="@+id/nextTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "
+            android:textColor="#111111"
+            android:textSize="18sp"
+            android:layout_below="@+id/nextRoomText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4sp" />
+
+
+    </RelativeLayout>
+
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="#222222"
+        android:textStyle="bold"
+        android:layout_marginEnd="12sp"
+        android:layout_marginRight="12sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/eventUpdateText"
+        android:layout_marginLeft="12sp"
+        android:layout_below="@+id/upcomingEventsText">
+    </ListView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center"
+        android:text="Last Updated"
+        android:textSize="16sp"
+        android:id="@+id/eventUpdateText"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Upcoming Events"
+        android:id="@+id/upcomingEventsText"
+        android:layout_below="@+id/nextEventLayout"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textColor="#002cff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Next Event"
+        android:id="@+id/nextEventText"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#002cff"
+        android:layout_marginTop="3sp" />
+
+</RelativeLayout>

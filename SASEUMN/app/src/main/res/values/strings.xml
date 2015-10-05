@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SASE UMN</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_eventscalendar">eventscalendar</string>
+    <string name="title_activity_events_calendar">Events Calendar</string>
+    <string name="title_activity_event_detail">Event Detail</string>
+    <string name="title_activity_news_feed">News Feed</string>
+    <string name="title_activity_news_detail">News Detail</string>
+    <string name="title_activity_main_swipe">SASE UMN</string>
+    <string name="title_activity_set_preferences">Settings</string>
+    <string name="title_activity_pref_fragment">PrefFragment</string>
+
+    <string name="about_description">
+        The Society of Asian Scientists and Engineers - University of Minnesota chapter
+        (SASE UMN) was established during the Summer of 2011 to promote the development of
+        Asians in science and engineering at the University and the surrounding community. \n \n
+        If you want to send feedback about the app, e-mail to nguy1912@umn.edu.
+    </string>
+
+    <string name="version_number">SASE UMN App - Version 1.1 </string>
+</resources>

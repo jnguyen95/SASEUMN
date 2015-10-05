@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:layout_marginLeft="@dimen/activity_vertical_margin"
+    android:layout_marginStart="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="start"
+    android:id="@+id/reLayout">
+
+    <TextView
+        android:id="@+id/eventTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Event Title"
+        android:layout_marginTop="7dp"
+        android:textSize="18sp"
+        android:textColor="#111111"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/eDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="September 20 2015"
+        android:textColor="#111111"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/eventTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4sp" />
+
+    <TextView
+        android:id="@+id/roomText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keller Hall 3-210"
+        android:textColor="#111111"
+        android:textSize="18sp"
+        android:layout_below="@+id/eDateText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4sp" />
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="06:00 PM"
+        android:textColor="#111111"
+        android:textSize="18sp"
+        android:layout_below="@+id/roomText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4sp" />
+
+
+</RelativeLayout>
