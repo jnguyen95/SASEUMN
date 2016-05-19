@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="start"
-    tools:context="com.sase.justin.saseumn.NewsFeed"
+    tools:context="com.sase.justin.saseumnv2.NewsFeed"
     android:id="@+id/nlistLayout">
 
     <ListView

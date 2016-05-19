@@ -19,5 +19,6 @@
         If you want to send feedback about the app, e-mail to nguy1912@umn.edu.
     </string>
 
-    <string name="version_number">SASE UMN App - Version 1.1 </string>
+    <string name="version_number">SASE UMN App - Version 2.0 </string>
+    <string name="title_activity_connect_with_sase">Connect with SASE UMN</string>
 </resources>

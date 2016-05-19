@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sase.justin.saseumn">
+    package="com.sase.justin.saseumnv2" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,19 +15,19 @@
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <permission
-        android:name="com.sase.justin.saseumn.permission.C2D_MESSAGE"
+        android:name="com.sase.justin.saseumnv2.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.sase.justin.saseumn.permission.C2D_MESSAGE" />
 
     <application
-        android:name="com.sase.justin.saseumn.Application"
+        android:name="com.sase.justin.saseumnv2.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/LiteBlueTheme">
+        android:theme="@style/LiteBlueTheme" >
         <activity
-            android:name="com.sase.justin.saseumn.MainSwipeActivity"
+            android:name="com.sase.justin.saseumnv2.MainSwipeActivity"
             android:label="@string/title_activity_main_swipe" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,24 +36,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.sase.justin.saseumn.EventDetail"
+            android:name="com.sase.justin.saseumnv2.EventDetail"
             android:label="@string/title_activity_event_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sase.justin.saseumn.MainSwipeActivity" />
+                android:value="com.sase.justin.saseumnv2.MainSwipeActivity" />
             <!-- android:value="com.example.justin.saseumn.EventsCalendar" /> -->
         </activity>
         <activity
-            android:name="com.sase.justin.saseumn.NewsDetail"
+            android:name="com.sase.justin.saseumnv2.NewsDetail"
             android:label="@string/title_activity_news_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sase.justin.saseumn.MainSwipeActivity" />
+                android:value="com.sase.justin.saseumnv2.MainSwipeActivity" />
             <!-- android:value="com.example.justin.saseumn.NewsFeed" /> -->
         </activity>
         <activity
-            android:name="com.sase.justin.saseumn.SetPreferencesActivity"
+            android:name="com.sase.justin.saseumnv2.SetPreferencesActivity"
             android:label="@string/title_activity_set_preferences" >
+        </activity>
+        <activity
+            android:name="com.sase.justin.saseumnv2.ConnectWithSASEActivity"
+            android:label="@string/title_activity_connect_with_sase" >
         </activity>
 
         <service android:name="com.parse.PushService" />
@@ -84,7 +88,6 @@
                 <category android:name="com.sase.justin.saseumn" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

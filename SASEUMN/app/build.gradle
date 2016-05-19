@@ -3,20 +3,20 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         sase {
-            keyAlias 'SASE UMN Keystore'
+            keyAlias 'sase12newkey'
             keyPassword 'saseumn'
-            storeFile file('C:/Users/Justin/Documents/UMN Folder/SASEUMN/sase.jks')
-            storePassword 'nmuesas'
+            storeFile file('C:/Users/Justin/Documents/sase12a.jks')
+            storePassword 'saseumn'
         }
     }
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
     defaultConfig {
-        applicationId "com.sase.justin.saseumn"
+        applicationId "com.sase.justin.saseumnv2"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 3
-        versionName "1.2"
+        versionName "2.0"
     }
     buildTypes {
         release {

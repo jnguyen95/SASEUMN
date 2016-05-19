@@ -15,7 +15,7 @@
     <PreferenceCategory
         android:title="About the SASE App">
 
-        <com.sase.justin.saseumn.AboutDialogPreference
+        <com.sase.justin.saseumnv2.AboutDialogPreference
             android:key="about_setting"
             android:title="About"
             android:summary="@string/version_number"

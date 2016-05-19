@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="start"
-    tools:context="com.sase.justin.saseumn.EventsCalendar"
+    tools:context="com.sase.justin.saseumnv2.EventsCalendar"
     android:id="@+id/listLayout">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -47,7 +47,7 @@
         android:id="@+id/timeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="06:00 PM"
+        android:text="06:00 PM - 07:00PM"
         android:textColor="#111111"
         android:textSize="18sp"
         android:layout_below="@+id/roomText"
