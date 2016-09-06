@@ -3,28 +3,22 @@ package com.sase.justin.saseumnv2;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.ParsePush;
+import java.io.IOException;
 
 public class MainSwipeActivity extends FragmentActivity implements ActionBar.TabListener {
 
-    private ViewPager _viewPager;
-    private ActionBar _actionBar;
-    private TabsAdapter _tabsAdapter;
-    private String[] _tabs;
-    private DateOperations _dateParser;
-    private BGOperations _bgParser;
-    private Bundle _fragmentBundle;
-
-    private String _currentDate;
+    private ViewPager viewPager;
+    private ActionBar actionBar;
+    private GetDataParser dataParser;
+    private Bundle fragmentBundle;
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,85 +26,70 @@ public class MainSwipeActivity extends FragmentActivity implements ActionBar.Tab
 //        requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main_swipe);
 
-        _dateParser = new DateOperations();
-        _fragmentBundle = new Bundle();
-        _bgParser = new BGOperations();
+        DateParser dateParser = new DateParser();
+        fragmentBundle = new Bundle();
+        dataParser = new GetDataParser();
 
-        _currentDate = _dateParser.getCurrentDate();
-        new EventAsyncTask().execute("http://www.saseumn.org/API/event.php?msg=query&byDate=" + _currentDate + "&timeframe=future");
+        currentDate = dateParser.getCurrentDate();
+
+        new EventAsyncTask().execute("https://graph.facebook.com/sase.umn/events?access_token=1780762562207328|0MIw-Ju8o7dXjU5ogdgUsVHfXFM");
     }
 
     private class EventAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-            return BGOperations.GET(urls[0]);
+            try {
+                return dataParser.GET(urls[0]);
+            } catch (IOException e) {
+                return "";
+            }
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result)
         {
-            if (_bgParser.isValidJsonArray(result))
+            if (dataParser.isValidJsonObject(result))
             {
-                _fragmentBundle.putString("eventData", result);
+                fragmentBundle.putString("fbEventData", result);
             }
             else
             {
-                _fragmentBundle.putString("eventData", "");
+                fragmentBundle.putString("fbEventData", "");
             }
-            new NewsAsyncTask().execute("http://www.saseumn.org/API/news.php?msg=query&byDate=" + _currentDate + "&timeframe=past");
+            setHoloTabLayout();
         }
     }
 
-    private class NewsAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            return BGOperations.GET(urls[0]);
-        }
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result)
-        {
-            if (_bgParser.isValidJsonArray(result))
-            {
-                _fragmentBundle.putString("newsData", result);
-            }
-            else
-            {
-                _fragmentBundle.putString("newsData", "");
-            }
-
-            setTabLayout();
-        }
-    }
+    // TODO: Add new code for Material Design. Due to implementation change in web, this will be done later in the semester.
 
     // TODO: Make sure any part of the code that uses this function only uses this if (API_VERSION < 21).
-    private void setTabLayout()
+    private void setHoloTabLayout()
     {
-        // Sets the tab layout.
-        _viewPager = (ViewPager) findViewById(R.id.pager);
-        _tabs = new String[]{"Events","News","Connect"};
-        _actionBar = getActionBar();
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        String[] tabs = new String[]{"Events", "Connect"};
+        //String[] tabs = new String[]{"Events", "News", "Connect"};
+        actionBar = getActionBar();
 
-        _tabsAdapter = new TabsAdapter(getSupportFragmentManager(), _fragmentBundle);
-        _viewPager.setAdapter(_tabsAdapter);
+        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager(), fragmentBundle);
+        viewPager.setAdapter(tabsAdapter);
 
-        _actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        for(String tab: _tabs)
+        for(String tab: tabs)
         {
-            _actionBar.addTab(_actionBar.newTab()
+            actionBar.addTab(actionBar.newTab()
                     .setText(tab)
                     .setTabListener(this));
 
         }
 
-        _viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
                 // on changing the page
                 // make respected tab selected
-                _actionBar.setSelectedNavigationItem(position);
+                actionBar.setSelectedNavigationItem(position);
             }
 
             @Override
@@ -148,9 +127,12 @@ public class MainSwipeActivity extends FragmentActivity implements ActionBar.Tab
         return super.onOptionsItemSelected(item);
     }
 
+    /* Functions below correspond to versions less than Android 5.0.
+       TODO: Make sure that we separate these.
+     */
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        _viewPager.setCurrentItem(tab.getPosition());
+        viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -161,22 +143,5 @@ public class MainSwipeActivity extends FragmentActivity implements ActionBar.Tab
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        reloadPref();
-    }
-
-    private void reloadPref()
-    {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isPushChecked = preferences.getBoolean("push_check", false);
-        if (isPushChecked) {
-            ParsePush.subscribeInBackground("sase_events");
-        } else {
-            ParsePush.unsubscribeInBackground("sase_events");
-        };
     }
 }

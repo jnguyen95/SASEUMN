@@ -7,10 +7,22 @@ import java.util.Locale;
 /**
  * Created by Justin on 8/20/2015.
  */
-public class DateOperations {
+public class DateParser {
 
-    //TODO: Change DateOperations into a Singleton. No need to create many of these objects.
-    public DateOperations() {
+    //TODO: Change DateParser into a Singleton. No need to create many of these objects.
+    public DateParser() {
+    }
+
+    public String getUSDate(Date date) {
+        return new SimpleDateFormat("MMMM dd, yyyy", Locale.US).format(date);
+    }
+
+    public String getDate(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date);
+    }
+
+    public String getTime(Date date) {
+        return new SimpleDateFormat("HH:mm", Locale.US).format(date);
     }
 
     public String getCurrentDate() {
@@ -18,7 +30,7 @@ public class DateOperations {
     }
 
     public String getCurrentDateAndTime() {
-        return new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(new Date());
+        return new SimpleDateFormat("yyyyMMddHHmm", Locale.US).format(new Date());
     }
 
     public String getUpdateText() {
@@ -32,9 +44,15 @@ public class DateOperations {
         return beginTime + " - " + endTime;
     }
 
-    // Converts a date in string to a "date ID" in long.
-    // This code changes if the implementation for the website changes. The processDate function, as of 2015-16 School Year,
-    // always handles dates in the form of (e.g. January 1, 2015 & March 3, 2016)
+    /* The calls below are the result of the use of ipages as our database. The implementation
+       will change overtime and are placed in the dateParser.
+       From Justin: I'm most likely going to separate this further into a class dedicated to the ipagesAPI.
+       However, this is low priority for 2016-17.
+     */
+
+    /* Converts a date in string to a "date ID" in long.
+       This code changes if the implementation for the website changes. The processDate function, as of 2015-16 School Year,
+       always handles dates in the form of (e.g. January 1, 2015 & March 3, 2016) */
     public String convertDateToID(String date) {
         String integerData = "";
 
@@ -61,8 +79,10 @@ public class DateOperations {
     }
 
     public long processDateAndTime(String date, String time) {
-        String dateIDString = convertDateToID(date);
-        dateIDString = dateIDString.concat(time);
+        String dateIDString = date.replace("-","");
+        String timeIDString = time.replace(":","");
+        dateIDString = dateIDString.concat(timeIDString);
+        System.out.println(Long.parseLong(dateIDString));
         return Long.parseLong(dateIDString);
     }
 
@@ -127,37 +147,6 @@ public class DateOperations {
                 return 12;
         }
         return 0;
-    }
-
-    /* TODO: Move this to the EventsCalendar file. This has no purpose in the overall design and is
-             only specific to the events. */
-    // Used to identify if the event is tomorrow or TODAY! in the Events Calendar.
-    public String ifTomorrowEventDate(String date) {
-        String cleanDate = date.replace(",", "");
-        String[] dateArray = cleanDate.split(" ");
-
-        int dateYear  = Integer.parseInt(dateArray[2]);
-        int dateMonth = getMonthNumber(dateArray[0].toLowerCase());
-        int dateDay   = Integer.parseInt(dateArray[1]);
-
-        String year = new SimpleDateFormat("yyyy", Locale.US).format(new Date());
-        int iYear = Integer.parseInt(year);
-        String month = new SimpleDateFormat("MM", Locale.US).format(new Date());
-        int iMonth = Integer.parseInt(month);
-        String day = new SimpleDateFormat("dd", Locale.US).format(new Date());
-        int iDay = Integer.parseInt(day);
-
-        if (dateYear - iYear == 0) {
-            if (dateMonth - iMonth == 0) {
-                if (dateDay - iDay == 0) {
-                    return "Today!";
-                }
-                else if (dateDay - iDay == 1) {
-                    return "Tomorrow!";
-                }
-            }
-        }
-        return date;
     }
 
     // Converts 24-Hour Time to 12-Hour time.

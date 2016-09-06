@@ -11,6 +11,7 @@
     <string name="title_activity_main_swipe">SASE UMN</string>
     <string name="title_activity_set_preferences">Settings</string>
     <string name="title_activity_pref_fragment">PrefFragment</string>
+    <string name="facebook_app_id">1780762562207328</string>
 
     <string name="about_description">
         The Society of Asian Scientists and Engineers - University of Minnesota chapter

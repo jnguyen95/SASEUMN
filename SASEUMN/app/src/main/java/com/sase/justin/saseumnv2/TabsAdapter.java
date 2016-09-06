@@ -10,15 +10,11 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class TabsAdapter extends FragmentPagerAdapter {
 
-    private Bundle _dataBundle;
-
-    public TabsAdapter(FragmentManager fm) {
-        super(fm);
-    }
+    private Bundle dataBundle;
 
     public TabsAdapter(FragmentManager fm, Bundle inputBundle) {
         super(fm);
-        _dataBundle = inputBundle;
+        dataBundle = inputBundle;
     }
 
     @Override
@@ -26,15 +22,14 @@ public class TabsAdapter extends FragmentPagerAdapter {
         switch (index) {
             case 0:
                 EventsCalendar evCalFragment = new EventsCalendar();
-                evCalFragment.setArguments(_dataBundle);
+                evCalFragment.setArguments(dataBundle);
                 return evCalFragment;
-            case 1:
+/*            case 1:
                 NewsFeed newsFeedFragment = new NewsFeed();
-                newsFeedFragment.setArguments(_dataBundle);
-                return newsFeedFragment;
-            case 2:
-                ConnectWithSASEActivity connectFragment = new ConnectWithSASEActivity();
-                return connectFragment;
+                newsFeedFragment.setArguments(dataBundle);
+                return newsFeedFragment; */
+            case 1:
+                return new ConnectWithSASEFragment();
         }
 
         return null;
@@ -42,7 +37,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
 

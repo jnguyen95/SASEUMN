@@ -15,28 +15,26 @@ import java.util.List;
  */
 public class ConnectAdapter extends ArrayAdapter
 {
-    private LayoutInflater _layoutInflater;
-    private List<ConnectPojo> _connectPojoList;
-    private TextView _descText;
-    private ImageView _connectImage;
+    private LayoutInflater layoutInflater;
+    private List<ConnectPojo> connectPojoList;
 
     public ConnectAdapter(Activity activity, List<ConnectPojo> connectPojoList) {
         super(activity, R.layout.connect_list_detail, connectPojoList);
-        _connectPojoList = connectPojoList;
-        _layoutInflater = activity.getWindow().getLayoutInflater();
+        this.connectPojoList = connectPojoList;
+        layoutInflater = activity.getWindow().getLayoutInflater();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View indivConnect = _layoutInflater.inflate(R.layout.connect_list_detail, parent, false);
+        View indivConnect = layoutInflater.inflate(R.layout.connect_list_detail, parent, false);
 
-        ConnectPojo cPojo = _connectPojoList.get(position);
+        ConnectPojo cPojo = connectPojoList.get(position);
 
-        _descText = (TextView) indivConnect.findViewById(R.id.connectDescriptionText);
-        _connectImage = (ImageView) indivConnect.findViewById(R.id.connectImage);
+        TextView descText = (TextView) indivConnect.findViewById(R.id.connectDescriptionText);
+        ImageView connectImage = (ImageView) indivConnect.findViewById(R.id.connectImage);
 
-        _descText.setText(cPojo.getDescriptionText());
-        _connectImage.setImageResource(cPojo.getImageViewId());
+        descText.setText(cPojo.getDescriptionText());
+        connectImage.setImageResource(cPojo.getImageViewId());
 
         return indivConnect;
     }

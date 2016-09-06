@@ -13,16 +13,15 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConnectWithSASEActivity extends ListFragment {
+public class ConnectWithSASEFragment extends ListFragment {
 
-    private List<ConnectPojo> _connectList;
-    private ConnectAdapter _connectAdapter;
+    private List<ConnectPojo> connectList;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View output = inflater.inflate(R.layout.activity_connect_with_sase, container, false);
 
-        _connectList = new ArrayList<>();
+        connectList = new ArrayList<>();
         loadConnectList();
 
         setAdapter();
@@ -47,14 +46,14 @@ public class ConnectWithSASEActivity extends ListFragment {
         twitterPojo.setImageViewId(R.drawable.twitter);
         twitterPojo.setUrl("https://twitter.com/SASEUMN?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor");
 
-        _connectList.add(webPojo);
-        _connectList.add(fbPojo);
-        _connectList.add(twitterPojo);
+        connectList.add(webPojo);
+        connectList.add(fbPojo);
+        connectList.add(twitterPojo);
     }
 
     private void setAdapter() {
-        _connectAdapter = new ConnectAdapter(getActivity(), _connectList);
-        setListAdapter(_connectAdapter);
+        ConnectAdapter connectAdapter = new ConnectAdapter(getActivity(), connectList);
+        setListAdapter(connectAdapter);
     }
 
     @Override

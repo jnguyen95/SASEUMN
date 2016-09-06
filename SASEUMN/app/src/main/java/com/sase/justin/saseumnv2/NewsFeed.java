@@ -25,10 +25,10 @@ import java.util.List;
 
 public class NewsFeed extends ListFragment implements FeedInterface {
 
-    private List<NewsPojo> _newsList = new ArrayList<>();
-    private TextView _updateText;
-    private DateOperations _dateParser;
-    private TextOperations _textParser;
+    private List<NewsPojo> newsList = new ArrayList<>();
+    private TextView updateText;
+    private DateParser dateParser;
+    private TextParser textParser;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,18 +45,18 @@ public class NewsFeed extends ListFragment implements FeedInterface {
             newsData = "[]";
         }
 
-        _updateText = (TextView) output.findViewById(R.id.newsUpdateText);
-        _dateParser = new DateOperations();
-        _textParser = new TextOperations(getActivity());
+        updateText = (TextView) output.findViewById(R.id.newsUpdateText);
+        dateParser = new DateParser();
+        textParser = new TextParser(getActivity());
 
         try {
             // This checks if the JSON Array can be obtained from the string.
             JSONArray newsArray = new JSONArray(newsData);
-            String formatDate = _dateParser.getUpdateText();
+            String formatDate = dateParser.getUpdateText();
 
-            _newsList = loadNewsFromJson(newsArray);
-            _textParser.updateTextFiles(newsData, formatDate, "nwList.txt", "nwLastUpdate.txt");
-            _updateText.setText(formatDate);
+            newsList = loadNewsFromJson(newsArray);
+            textParser.updateTextFiles(newsData, formatDate, "nwList.txt", "nwLastUpdate.txt");
+            updateText.setText(formatDate);
         } catch (JSONException e) {
             readOperation();
         } catch (IOException e) {
@@ -64,7 +64,7 @@ public class NewsFeed extends ListFragment implements FeedInterface {
             e.printStackTrace();
         }
 
-        Collections.sort(_newsList, new NewsPojo());
+        Collections.sort(newsList, new NewsPojo());
         setAdapter();
 
         return output;
@@ -74,20 +74,20 @@ public class NewsFeed extends ListFragment implements FeedInterface {
         String failedUpdate;
 
         try {
-            String fileJson = _textParser.readFromFile("nwList.txt");
+            String fileJson = textParser.readFromFile("nwList.txt");
             JSONArray newsArray = new JSONArray(fileJson);
-            _newsList = loadNewsFromJson(newsArray);
+            newsList = loadNewsFromJson(newsArray);
 
-            String lastUpdate = _textParser.readFromFile("nwLastUpdate.txt");
-            _updateText.setText(lastUpdate);
+            String lastUpdate = textParser.readFromFile("nwLastUpdate.txt");
+            updateText.setText(lastUpdate);
         } catch (JSONException | IOException e1) {
             failedUpdate = "Last Updated: N/A (Unable to load data!)";
-            _updateText.setText(failedUpdate);
+            updateText.setText(failedUpdate);
         }
     }
 
     public void setAdapter() {
-        ArrayAdapter m_nwAdapter = new NewsAdapter(getActivity(), _newsList);
+        ArrayAdapter m_nwAdapter = new NewsAdapter(getActivity(), newsList);
         setListAdapter(m_nwAdapter);
     }
 
@@ -104,7 +104,7 @@ public class NewsFeed extends ListFragment implements FeedInterface {
                 news.setDate(getResultDate);
                 news.setContent(jsonNews.getString("Content"));
 //                news.setImageUrl(jsonNews.getString("ImageUrl"));
-                news.setDateID(_dateParser.processDate(getResultDate));
+                news.setDateID(dateParser.processDate(getResultDate));
 
                 nwOutput.add(news);
             } catch (JSONException e) {

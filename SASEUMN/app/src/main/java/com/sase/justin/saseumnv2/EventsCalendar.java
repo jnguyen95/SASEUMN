@@ -18,17 +18,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+/*
+
+ Events Calendar uses the Facebook Graph API for its calls. This implementation
+ changes depending on website functionality. As of 2016-17, this uses the Facebook Graph API.
+
+*/
 public class EventsCalendar extends ListFragment implements FeedInterface {
 
-    private List<EventPojo> _eventsList = new ArrayList<>();
-    private BGOperations _bgParser;
-    private DateOperations _dateParser;
-    private TextOperations _textParser;
-    private TextView _updateText;
+    private List<EventPojo> eventsList = new ArrayList<>();
+    private DateParser dateParser;
+    private TextParser textParser;
+    private TextView updateText;
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,14 +45,13 @@ public class EventsCalendar extends ListFragment implements FeedInterface {
         String eventData;
 
         // Initialize the Variables.
-        _bgParser = new BGOperations(getActivity());
-        _dateParser = new DateOperations();
-        _textParser = new TextOperations(getActivity());
-        _updateText = (TextView) output.findViewById(R.id.eventUpdateText);
+        dateParser = new DateParser();
+        textParser = new TextParser(getActivity());
+        updateText = (TextView) output.findViewById(R.id.eventUpdateText);
         Bundle eventBundle = this.getArguments();
 
         if (eventBundle != null) {
-            eventData = eventBundle.getString("eventData");
+            eventData = eventBundle.getString("fbEventData");
         }
         else {
             Toast.makeText(getActivity(), "Cannot obtain Event Data!",
@@ -53,13 +61,14 @@ public class EventsCalendar extends ListFragment implements FeedInterface {
 
         try {
             // This checks if the JSON Array can be obtained from the string.
-            JSONArray eventArray = new JSONArray(eventData);
-            String formatDate = _dateParser.getUpdateText();
-
+            JSONObject jsonData = new JSONObject(eventData);
+            JSONArray eventArray = jsonData.getJSONArray("data");
             // If this returns a valid array, store all of these in a text file inside.
-            _eventsList = loadEventsFromJson(eventArray);
-            _textParser.updateTextFiles(eventData, formatDate, "evList.txt", "evLastUpdate.txt");
-            _updateText.setText(formatDate);
+            eventsList = loadEventsFromJson(eventArray);
+
+            String formatDate = dateParser.getUpdateText();
+            textParser.updateTextFiles(eventData, formatDate, "evList.txt", "evLastUpdate.txt");
+            updateText.setText(formatDate);
         } catch (JSONException | NullPointerException e) {
             readOperation();
         } catch (IOException e) {
@@ -67,14 +76,14 @@ public class EventsCalendar extends ListFragment implements FeedInterface {
         }
 
         // This is done in the case that the API call, for whatever reason, does not load the correct events properly.
-        Collections.sort(_eventsList, new EventPojo());
+        Collections.sort(eventsList, new EventPojo());
         processDateIDs();
 
         // If there are no events to be loaded from file (EG: A fresh app that is somehow offline after installation)
         // Then this will simply throw a printStackTrace() and continue on as planned.
         try {
-            EventPojo nextEvent = _eventsList.get(0);
-            _eventsList = _eventsList.subList(1, _eventsList.size());
+            EventPojo nextEvent = eventsList.get(0);
+            eventsList = eventsList.subList(1, eventsList.size());
             loadNextEvent(nextEvent, output);
         }
         catch (java.lang.IndexOutOfBoundsException e) {
@@ -92,56 +101,77 @@ public class EventsCalendar extends ListFragment implements FeedInterface {
 
         try {
             // If we can't obtain data from the server, load the local text files to display in the event calendar.
-            String fileJson = _textParser.readFromFile("evList.txt");
+            String fileJson = textParser.readFromFile("evList.txt");
             JSONArray eventArray = new JSONArray(fileJson);
-            _eventsList = loadEventsFromJson(eventArray);
+            eventsList = loadEventsFromJson(eventArray);
 
             // If successful, load the second text file containing the dates.
-            String lastUpdate = _textParser.readFromFile("evLastUpdate.txt");
-            _updateText.setText(lastUpdate);
+            String lastUpdate = textParser.readFromFile("evLastUpdate.txt");
+            updateText.setText(lastUpdate);
         } catch (JSONException | IOException e1) {
             failedUpdate = "Last Updated: N/A (Unable to load data!)";
-            _updateText.setText(failedUpdate);
+            updateText.setText(failedUpdate);
         }
     }
 
     public void setAdapter() {
-        ArrayAdapter m_evAdapter = new EventAdapter(getActivity(), _eventsList);
+        ArrayAdapter m_evAdapter = new EventAdapter(getActivity(), eventsList);
         setListAdapter(m_evAdapter);
     }
 
     //Functions for Events. If a JSONArray exists from the API call, store each element in an EventPojo
     //This will then be used to display data to the user from the Events Calendar and the Event Detail.
     private List<EventPojo> loadEventsFromJson(JSONArray jArray) {
-        List<EventPojo> eventOutput = new ArrayList<EventPojo>();
+        List<EventPojo> eventOutput = new ArrayList<>();
+
         String getOriginalEndTime;
-        String getResultDate;
-        String getResultTime;
+        String getOriginalStartTime;
+        String beginDate;
+        String beginTime;
         String endTime;
+
+        Date fbBeginDate;
+        Date fbEndDate;
+
+        JSONObject locationJson;
+
+        SimpleDateFormat fbTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
 
         for (int i = 0; i < jArray.length(); i++) {
             try {
                 JSONObject jsonEvent = jArray.getJSONObject(i);
                 EventPojo event = new EventPojo();
 
-                getResultDate = jsonEvent.getString("Date");
+                try {
+                    event.setName(jsonEvent.getString("name"));
+                    event.setDescription(jsonEvent.getString("description"));
 
-                getOriginalEndTime = jsonEvent.getString("EndTime");
-                getResultTime = _dateParser.convertTime(jsonEvent.getString("Time"));
-                endTime = _dateParser.convertTime(getOriginalEndTime);
+                    locationJson = jsonEvent.getJSONObject("place");
+                    event.setLocation(locationJson.getString("name"));
 
-                event.setName(jsonEvent.getString("Name"));
-                event.setDate(_dateParser.ifTomorrowEventDate(getResultDate));
-                event.setDescription(jsonEvent.getString("Description"));
-                event.setLocation(jsonEvent.getString("Location"));
-                event.setTime(_dateParser.concatenateDates(getResultTime, endTime));
-                event.setFb(jsonEvent.getString("FB"));
-                event.setDateID(_dateParser.processDateAndTime(getResultDate, getOriginalEndTime.replace(":", "")));
+                    getOriginalStartTime = jsonEvent.getString("start_time");
+                    fbBeginDate = fbTimeFormat.parse(getOriginalStartTime);
+                    beginTime = dateParser.convertTime(dateParser.getTime(fbBeginDate));
+                    beginDate = dateParser.getDate(fbBeginDate);
+
+                    getOriginalEndTime = jsonEvent.getString("end_time");
+                    fbEndDate = fbTimeFormat.parse(getOriginalEndTime);
+                    endTime = dateParser.convertTime(dateParser.getTime(fbEndDate));
+
+                    event.setDate(ifTomorrowEventDate(dateParser.getDate(fbBeginDate)));
+                    event.setTime(dateParser.concatenateDates(beginTime, endTime));
+                    event.setDateID(dateParser.processDateAndTime(beginDate, dateParser.getTime(fbEndDate)));
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 eventOutput.add(event);
-            } catch (JSONException e) {
+            } catch (ParseException e) {
                 e.printStackTrace();
                 break;
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
@@ -191,21 +221,54 @@ public class EventsCalendar extends ListFragment implements FeedInterface {
     private void processDateIDs() {
         long pojoDateID;
         EventPojo ePojo;
+        int i = 0;
         boolean ifDone = false;
 
-        String currentDate = _dateParser.getCurrentDateAndTime();
-
+        String currentDate = dateParser.getCurrentDateAndTime();
         long currentDateID = Long.parseLong(currentDate);
-        while (!ifDone && !_eventsList.isEmpty()) {
-            ePojo = _eventsList.get(0);
+
+        while (i < eventsList.size()) {
+            ePojo = eventsList.get(i);
             pojoDateID = ePojo.getDateID();
+            System.out.println("Event: " + ePojo.getName());
+            System.out.println("CurrentDateID: " + currentDateID + ", pojoDateID: " + pojoDateID);
             if (pojoDateID < currentDateID) {
-                _eventsList.remove(0);
+                eventsList.remove(i);
             }
             else {
-                ifDone = true;
+                i++;
             }
         }
+    }
+
+    public String ifTomorrowEventDate(String date) throws ParseException {
+        String[] dateArray = date.split("-");
+
+        int dateYear  = Integer.parseInt(dateArray[0]);
+        int dateMonth = Integer.parseInt(dateArray[1]);
+        int dateDay   = Integer.parseInt(dateArray[2]);
+
+        String year = new SimpleDateFormat("yyyy", Locale.US).format(new Date());
+        int iYear = Integer.parseInt(year);
+        String month = new SimpleDateFormat("MM", Locale.US).format(new Date());
+        int iMonth = Integer.parseInt(month);
+        String day = new SimpleDateFormat("dd", Locale.US).format(new Date());
+        int iDay = Integer.parseInt(day);
+
+        if (dateYear - iYear == 0) {
+            if (dateMonth - iMonth == 0) {
+                if (dateDay - iDay == 0) {
+                    return "Today!";
+                }
+                else if (dateDay - iDay == 1) {
+                    return "Tomorrow!";
+                }
+            }
+        }
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date inputDate = inputFormat.parse(date);
+        return dateParser.getUSDate(inputDate);
     }
 
     @Override
@@ -216,7 +279,6 @@ public class EventsCalendar extends ListFragment implements FeedInterface {
 
         intent.putExtra("Name", ePojo.getName());
         intent.putExtra("Date", ePojo.getDate());
-        intent.putExtra("Fb", ePojo.getFb());
         intent.putExtra("Location", ePojo.getLocation());
         intent.putExtra("Time", ePojo.getTime());
         intent.putExtra("Description",ePojo.getDescription());
