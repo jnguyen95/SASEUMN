@@ -1,17 +1,17 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="General Settings">
+    <!--    <PreferenceCategory
+            android:title="General Settings">
 
-        <CheckBoxPreference
-            android:key="push_check"
-            android:title="Push Notifications"
-            android:defaultValue="true"
-            android:summary="If enabled, allows you to be notified of events coming up within 24 hours." />
+            <CheckBoxPreference
+                android:key="push_check"
+                android:title="Push Notifications"
+                android:defaultValue="true"
+                android:summary="If enabled, allows you to be notified of events coming up within 24 hours." />
 
     </PreferenceCategory>
-
+!-->
     <PreferenceCategory
         android:title="About the SASE App">
 

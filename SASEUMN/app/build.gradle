@@ -15,8 +15,8 @@ android {
         applicationId "com.sase.justin.saseumnv2"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 4
-        versionName "2016-17 1.0"
+        versionCode 5
+        versionName "2016-17 - V1.0.1"
     }
     buildTypes {
         release {
